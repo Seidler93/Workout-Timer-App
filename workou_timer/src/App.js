@@ -1,24 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Navbar } from './components/Navbar';
+import TimerCard from './components/TimerCard';
+import { NewTimer } from './components/NewTimer';
+import Timer from './components/Timer';
 
 function App() {
+  const timers = [
+    {id: 1, name: 'EMOM'},
+  ]
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Navbar/>
+      <button className='new-timer-btn'>New Timer</button>
+      <div className='timer-container'>
+        {timers.map(timer => <TimerCard key={timer.id} timer={timer}/>)}
+      </div>
+      <NewTimer/>
+      <Timer/>
     </div>
   );
 }
