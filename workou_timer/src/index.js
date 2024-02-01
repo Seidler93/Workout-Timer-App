@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
@@ -11,6 +12,7 @@ import ErrorPage from '../src/pages/ErrorPage'
 import HomePage from './pages/HomePage';
 import CreateTimerPage from './pages/CreateTimerPage';
 import TimerPage from './pages/TimerPage';
+import ProfilePage from './pages/ProfilePage';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> }, 
       { path: '/create', element: <CreateTimerPage /> },       
       { path: '/timer', element: <TimerPage /> },       
+      { path: '/profile', element: <ProfilePage /> },       
     ]
   },
 ]);

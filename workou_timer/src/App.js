@@ -1,9 +1,12 @@
 import { Outlet } from 'react-router-dom';
+import UserProvider from './utils/UserContext';
 
 function App() {
   
   return (
-    <Outlet/>
+    <UserProvider>
+      <Outlet/>
+    </UserProvider>
   );
 }
 

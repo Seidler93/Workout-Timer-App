@@ -1,21 +1,24 @@
 import { useState, useEffect } from 'react';
+import { useUserContext } from '../utils/UserContext';
+import { Link } from 'react-router-dom';
 
 let countdown;
 
-const TimerPage = ({ timer }) => {
+const TimerPage = () => {
+  const {currentTimer} = useUserContext()
+
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [currentRound, setCurrentRound] = useState(1);
   const [currentCycle, setCurrentCycle] = useState(1);
   const [isRunning, setIsRunning] = useState(false);
   const [isRestPhase, setIsRestPhase] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState('starting');
   
-
   useEffect(() => {
-    setMinutes(timer.exerciseMin);
-    setSeconds(timer.exerciseSec);
-  }, [timer.rounds, timer.exerciseMin, timer.exerciseSec]);
+    setMinutes(currentTimer.exerciseMin);
+    setSeconds(currentTimer.exerciseSec);
+  }, [currentTimer.rounds, currentTimer.exerciseMin, currentTimer.exerciseSec]);
 
   const reduceMin = () => {
     if (minutes === 0) {
@@ -29,24 +32,26 @@ const TimerPage = ({ timer }) => {
   const startRest = () => {
     if (isRestPhase) {
       increaseRound();
-    } else if (currentRound === timer.rounds) {
+    } else if (currentRound === currentTimer.rounds) {
+      increaseRound()
+    } else if (currentTimer.restMin === 0 && currentTimer.restSec === 0) {
       increaseRound()
     } else {
-      setMinutes(timer.restMin);
-      setSeconds(timer.restSec);
+      setMinutes(currentTimer.restMin);
+      setSeconds(currentTimer.restSec);
       setIsRestPhase(true);
       setMessage('begin rest')
     }
   };
 
   const increaseRound = () => {
-    if (currentRound < timer.rounds) {
-      setMinutes(timer.exerciseMin);
-      setSeconds(timer.exerciseSec);
+    if (currentRound < currentTimer.rounds) {
+      setMinutes(currentTimer.exerciseMin);
+      setSeconds(currentTimer.exerciseSec);
       setIsRestPhase(false);
       setCurrentRound((prevRound) => prevRound + 1);
       setMessage('increase round')
-    } else if (currentCycle < timer.cycles) {
+    } else if (currentCycle < currentTimer.cycles) {
       startNextCycle();
       setMessage('increase cycle')
     } else {
@@ -58,8 +63,8 @@ const TimerPage = ({ timer }) => {
 
   const startNextCycle = () => {
     setCurrentCycle((prevCycle) => prevCycle + 1);
-    setMinutes(timer.cycleRestMin);
-    setSeconds(timer.cycleRestSec);
+    setMinutes(currentTimer.cycleRestMin);
+    setSeconds(currentTimer.cycleRestSec);
     setIsRestPhase(true);
     setCurrentRound(1);
     setMessage('start next cycle')
@@ -78,7 +83,7 @@ const TimerPage = ({ timer }) => {
     }
 
     return () => clearInterval(countdown);
-  }, [minutes, seconds, currentRound, currentCycle, isRunning, isRestPhase, timer]);
+  }, [minutes, seconds, currentRound, currentCycle, isRunning, isRestPhase, currentTimer]);
 
   const handleStartPause = () => {
     setIsRunning((prevIsRunning) => !prevIsRunning);
@@ -86,9 +91,11 @@ const TimerPage = ({ timer }) => {
 
   return (
     <div>
+      <Link to={'/'}>Back</Link>
+
       <p>{message}</p>
-      <p>Round {currentRound}/{timer.rounds}</p>
-      {timer.cycles > 1 && <p>Cycle {currentCycle}/{timer.cycles}</p>}
+      <p>Round {currentRound}/{currentTimer.rounds}</p>
+      {currentTimer.cycles > 1 && <p>Cycle {currentCycle}/{currentTimer.cycles}</p>}
       <p className={`${isRestPhase ? 'rest' : 'work'}`}>{`${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}</p>
       <p className={`${isRestPhase ? 'rest' : 'work'}`}>{`${isRestPhase ? 'rest' : 'work'}`}</p>
       <button onClick={handleStartPause}>{isRunning ? 'Pause' : 'Start'}</button>
