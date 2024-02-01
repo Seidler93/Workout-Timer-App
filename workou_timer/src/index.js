@@ -13,6 +13,7 @@ import HomePage from './pages/HomePage';
 import CreateTimerPage from './pages/CreateTimerPage';
 import TimerPage from './pages/TimerPage';
 import ProfilePage from './pages/ProfilePage';
+import LoginPage from './pages/LoginPage';
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,8 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <HomePage /> }, 
+      { index: true, element: <LoginPage /> }, 
+      { path: '/home', element: <HomePage /> },       
       { path: '/create', element: <CreateTimerPage /> },       
       { path: '/timer', element: <TimerPage /> },       
       { path: '/profile', element: <ProfilePage /> },       
