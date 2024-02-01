@@ -27,26 +27,36 @@ nav h2 {
   color: white;
 }
 
-.new-timer-btn,
 .timer-container {
   width: 100%;
   max-width: 800px;
   min-width: 300px;
+  display: flex;
+  flex-direction: column;
 }
 
 .new-timer-btn,
 .timer-card {
   border: 2px solid black;
   padding: 10px 20px;
-  margin: 10px 0;
+  margin: 10px;
   border-radius: 6px;
 }
 
 .new-timer-btn {
   cursor: pointer;
+  flex-grow: 1;
 }
 
 .new-timer {
   display: flex;
   flex-direction: column;
+}
+
+.rest {
+  color: green;
+}
+
+.work {
+  color: red;
 }
