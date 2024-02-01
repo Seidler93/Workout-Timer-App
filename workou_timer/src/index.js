@@ -5,11 +5,29 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import ErrorPage from '../src/pages/ErrorPage'
+import HomePage from './pages/HomePage';
+import CreateTimerPage from './pages/CreateTimerPage';
+import TimerPage from './pages/TimerPage';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, element: <HomePage /> }, 
+      { path: '/create', element: <CreateTimerPage /> },       
+      { path: '/timer', element: <TimerPage /> },       
+    ]
+  },
+]);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 );
 
 // If you want your app to work offline and load faster, you can change
