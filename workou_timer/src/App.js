@@ -12,12 +12,13 @@ function App() {
       id: 1, 
       name: 'EMOM', 
       exerciseMin: 0, 
-      exerciseSec: 5,
+      exerciseSec: 7,
       restMin: 0,
-      restSec: 5,
-      rounds: 2,
-      cycles: 2,
-      cycleRest: 60,
+      restSec: 7,
+      rounds: 3,
+      cycles: 3,
+      cycleRestMin: 0,
+      cycleRestSec: 7,
     },
   ]
 
