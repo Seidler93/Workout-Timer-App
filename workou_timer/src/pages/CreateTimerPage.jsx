@@ -1,11 +1,18 @@
+import { auth, firestore, googleAuthProvider } from '../utils/firebase';
 import { Link } from "react-router-dom"
 import { useUserContext } from '../utils/UserContext';
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function CreateTimerPage() {
-  const {setTimers, setCurrentTimer} = useUserContext()
+  const {setTimers, setCurrentTimer, user} = useUserContext()
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/')
+    }
+  })
 
   const [timerData, setTimerData] = useState({
     id: Math.random().toString(36).substring(2), 
@@ -40,7 +47,7 @@ export default function CreateTimerPage() {
     setCurrentTimer(timerToAdd)
     // Add the new timer to the existing timers using setTimers
     setTimers((prevTimers) => [...prevTimers, timerToAdd]);
-    navigate(`/timer`);
+    createTimer(timerToAdd)
   };
 
   const handleInputChange = (e) => {
@@ -51,9 +58,27 @@ export default function CreateTimerPage() {
     }));
   };
 
+  const createTimer = async (timer) => {
+    try {
+      const uid = user.uid;
+      const ref = firestore.collection('users').doc(uid).collection('timers'); // Use 'timers' instead of 'posts'
+      
+      // Use add() to create a new document in the collection
+      const newTimerDocRef = await ref.add(timer);
+      navigate(`/timer`);
+      
+      console.log('Timer added with ID: ', newTimerDocRef.id);
+    } catch (error) {
+      console.error('Error creating timer:', error);
+      throw error;
+    }
+  };
+
+  
+
   return (
     <>
-      <Link to="/">Back</Link>
+      <Link to="/home">Back</Link>
 
       <form className="new-timer px-2" onSubmit={handleSubmit}>
         <div className="d-flex justify-content-between p-2">

@@ -1,27 +1,52 @@
-import { auth, firestore } from './firebase';
-import { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useEffect } from 'react';
+import { auth, firestore } from '../utils/firebase';
+import { useUserContext } from '../utils/UserContext';
+import { useNavigate } from 'react-router-dom';
 
-// Custom hook to read auth record and user profile doc
-export function useUserData() {
-  const [user] = useAuthState(auth);
-  const [username, setUsername] = useState(null);
+const AuthStateInitializer = () => {
+  const { setUser } = useUserContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // turn off realtime subscription
-    let unsubscribe;
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        await fetchUser(user);
+      } else {
+        // User is signed out
+        setUser(null);
+      }
 
-    if (user) {
-      const ref = firestore.collection('users').doc(user.uid);
-      unsubscribe = ref.onSnapshot((doc) => {
-        setUsername(doc.data()?.username);
-      });
-    } else {
-      setUsername(null);
+      // Regardless of the authentication state, navigate after processing
+      navigate('/home');
+    });
+
+    return () => unsubscribe(); // Unsubscribe when component unmounts or is about to be rerendered
+  }, [setUser, navigate]);
+
+  const fetchUser = async (user) => {
+    try {
+      // Assuming fetchUserDataByEmail is a function that fetches user data by email
+      const newUser = await fetchUserDataByEmail(user.email);
+      setUser(newUser);
+    } catch (error) {
+      // Handle errors during user creation
+      console.error('Error fetching user data:', error);
     }
+  };
+  
+  const fetchUserDataByEmail = async (email) => {
+    const snapshot = await firestore.collection('users').where('email', '==', email).get();
+    if (!snapshot.empty) {
+      const userData = snapshot.docs[0].data();
+      return userData;
+    } else {
+      // Handle the case where the email exists but the user data is not found
+      return null;
+    }
+  };
+  
+  return null; // This component doesn't render anything
+};
 
-    return unsubscribe;
-  }, [user]);
 
-  return { user, username };
-}
+export default AuthStateInitializer;

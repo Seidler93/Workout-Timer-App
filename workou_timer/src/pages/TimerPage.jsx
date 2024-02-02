@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useUserContext } from '../utils/UserContext';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 let countdown;
 
 const TimerPage = () => {
-  const {currentTimer} = useUserContext()
+  const {currentTimer, user} = useUserContext()
+  const navigate = useNavigate();
 
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -15,6 +17,12 @@ const TimerPage = () => {
   const [isRestPhase, setIsRestPhase] = useState(false);
   const [message, setMessage] = useState('starting');
   
+  useEffect(() => {
+    if (!user) {
+      navigate('/')
+    }
+  })
+
   useEffect(() => {
     setMinutes(currentTimer.exerciseMin);
     setSeconds(currentTimer.exerciseSec);
@@ -91,7 +99,7 @@ const TimerPage = () => {
 
   return (
     <div>
-      <Link to={'/'}>Back</Link>
+      <Link to={'/home'}>Back</Link>
 
       <p>{message}</p>
       <p>Round {currentRound}/{currentTimer.rounds}</p>

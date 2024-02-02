@@ -3,11 +3,23 @@ import TimerCard from '../components/TimerCard';
 import { Link } from 'react-router-dom';
 import { useUserContext } from '../utils/UserContext';
 import { useEffect } from 'react';
+import { firestore } from '../utils/firebase';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../utils/firebase';
 
 export default function HomePage() {
-  const {timers, setTimers} = useUserContext()
+  const {user, timers, setTimers} = useUserContext()
+  const navigate = useNavigate();
 
-  const myTimers = [
+  useEffect(() => {
+    fetchTimers()
+    console.log(user);
+    if (!user) {
+      navigate('/')
+    }
+  }, [])
+
+  const defaultTimers = [
     {
       id: 1, 
       name: 'Intervals', 
@@ -34,13 +46,31 @@ export default function HomePage() {
     },
   ]
 
- 
+  const fetchTimers = async () => {
+    try {
+      const uid = user.uid;
+
+      // Reference to the 'timers' subcollection under the user's document
+      const timersRef = firestore.collection('users').doc(uid).collection('timers');
+
+      // Get all documents from the collection
+      const timersSnapshot = await timersRef.get();
+
+      // Extract data from each document
+      const timersData = timersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+      setTimers(timersData);
+    } catch (error) {
+      console.error('Error fetching timers:', error);
+    }
+  };
 
   return (
     <div className="app">
       <Navbar/>
       <div className='timer-container'>
         <Link to={'/create'} className='new-timer-btn'>New Timer</Link>
+        {defaultTimers.map(timer => <TimerCard key={timer.id} timer={timer}/>)}
         {timers.map(timer => <TimerCard key={timer.id} timer={timer}/>)}
       </div>
     </div>

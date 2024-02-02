@@ -7,6 +7,11 @@ export default function LoginPage() {
   const {user, setUser} = useUserContext()
   const navigate = useNavigate();
 
+  useEffect(() => {
+    user && navigate('/home')
+    console.log(auth.currentUser);
+  }, [])
+
   // Sign in with Google button
   function SignInButton() {
     const signInWithGoogle = async () => {
@@ -32,6 +37,7 @@ export default function LoginPage() {
   
   // Sign out button
   function SignOutButton() {
+
     return <button className='btn-blue' onClick={() => auth.signOut()}>Sign Out</button>;
   }
 
