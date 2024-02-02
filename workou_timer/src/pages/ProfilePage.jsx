@@ -8,12 +8,6 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const {user, setUser} = useUserContext()
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/')
-    }
-  })
-
   // Sign out button
   function SignOutButton() {
     return <button className='btn-blue' onClick={() => auth.signOut()}>Sign Out</button>;
@@ -21,7 +15,7 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <Link to={'/home'}>Back</Link>
+      <Link to={'/'}>Back</Link>
       <p>settings</p>
       <SignOutButton/>
     </div>

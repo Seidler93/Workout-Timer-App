@@ -7,11 +7,6 @@ export default function LoginPage() {
   const {user, setUser} = useUserContext()
   const navigate = useNavigate();
 
-  useEffect(() => {
-    user && navigate('/home')
-    console.log(auth.currentUser);
-  }, [])
-
   // Sign in with Google button
   function SignInButton() {
     const signInWithGoogle = async () => {
@@ -49,7 +44,7 @@ export default function LoginPage() {
       try {
         const newUser = await createNewUser(userData);
         setUser(newUser);
-        navigate(`/home`);
+        navigate(`/`);
       } catch (error) {
         // Handle errors during user creation
         console.error("Error creating new user:", error);
@@ -58,7 +53,7 @@ export default function LoginPage() {
       try {
         const newUser = await fetchUserDataByEmail(userData.email);
         setUser(newUser);
-        navigate(`/home`);
+        navigate(`/`);
       } catch (error) {
         // Handle errors during user creation
         console.error("Error creating new user:", error);

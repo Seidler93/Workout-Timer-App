@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { auth, firestore } from '../utils/firebase';
 import { useUserContext } from '../utils/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import LoginPage from '../pages/LoginPage';
 
 const AuthStateInitializer = () => {
-  const { setUser } = useUserContext();
+  const { user, setUser } = useUserContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +18,7 @@ const AuthStateInitializer = () => {
       }
 
       // Regardless of the authentication state, navigate after processing
-      navigate('/home');
+      navigate('/');
     });
 
     return () => unsubscribe(); // Unsubscribe when component unmounts or is about to be rerendered
@@ -44,8 +45,12 @@ const AuthStateInitializer = () => {
       return null;
     }
   };
-  
-  return null; // This component doesn't render anything
+
+  if (user) {
+    return <Outlet/>
+  } else {
+    return <LoginPage/>
+  }
 };
 
 

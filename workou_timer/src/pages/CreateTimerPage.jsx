@@ -8,12 +8,6 @@ export default function CreateTimerPage() {
   const {setTimers, setCurrentTimer, user} = useUserContext()
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/')
-    }
-  })
-
   const [timerData, setTimerData] = useState({
     id: Math.random().toString(36).substring(2), 
     name: 'Default', 
@@ -74,11 +68,9 @@ export default function CreateTimerPage() {
     }
   };
 
-  
-
   return (
     <>
-      <Link to="/home">Back</Link>
+      <Link to="/">Back</Link>
 
       <form className="new-timer px-2" onSubmit={handleSubmit}>
         <div className="d-flex justify-content-between p-2">

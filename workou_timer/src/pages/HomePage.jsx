@@ -4,19 +4,12 @@ import { Link } from 'react-router-dom';
 import { useUserContext } from '../utils/UserContext';
 import { useEffect } from 'react';
 import { firestore } from '../utils/firebase';
-import { useNavigate } from 'react-router-dom';
-import { auth } from '../utils/firebase';
 
 export default function HomePage() {
   const {user, timers, setTimers} = useUserContext()
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchTimers()
-    console.log(user);
-    if (!user) {
-      navigate('/')
-    }
   }, [])
 
   const defaultTimers = [

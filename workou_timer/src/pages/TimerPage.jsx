@@ -16,12 +16,6 @@ const TimerPage = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [isRestPhase, setIsRestPhase] = useState(false);
   const [message, setMessage] = useState('starting');
-  
-  useEffect(() => {
-    if (!user) {
-      navigate('/')
-    }
-  })
 
   useEffect(() => {
     setMinutes(currentTimer.exerciseMin);
@@ -99,7 +93,7 @@ const TimerPage = () => {
 
   return (
     <div>
-      <Link to={'/home'}>Back</Link>
+      <Link to={'/'}>Back</Link>
 
       <p>{message}</p>
       <p>Round {currentRound}/{currentTimer.rounds}</p>
