@@ -3,9 +3,11 @@ import { Link } from "react-router-dom"
 import { useUserContext } from '../utils/UserContext';
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import ColorSelector from '../components/ColorSelect';
 
 export default function CreateTimerPage() {
   const {setTimers, setCurrentTimer, user} = useUserContext()
+
   const navigate = useNavigate();
 
   function capitalizeFirstLetter(str) {
@@ -18,11 +20,14 @@ export default function CreateTimerPage() {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  const colors = ['#EAC435', '#345995', '#E40066','#03CEA4','#FB4D3D',]
   const getRandomColor = () => {
-    const colors = ['#EAC435', '#345995', '#E40066','#03CEA4','#FB4D3D',]
     const randomIndex = Math.floor(Math.random() * colors.length);
     return colors[randomIndex];
   }
+
+  const [selectedColor, setSelectedColor] = useState(getRandomColor()); // Default color
+
 
   const [timerData, setTimerData] = useState({
     id: Math.random().toString(36).substring(2), 
@@ -35,7 +40,7 @@ export default function CreateTimerPage() {
     cycles: 1,
     cycleRestMin: 0,
     cycleRestSec: 0,
-    color: getRandomColor(), 
+    color: selectedColor, 
   });
 
   const handleSubmit = (e) => {
@@ -70,6 +75,13 @@ export default function CreateTimerPage() {
     }));
   };
 
+  useEffect(() => {
+    setTimerData((prevData) => ({
+      ...prevData,
+      color: selectedColor,
+    }));
+  }, [selectedColor])
+
   const createTimer = async (timer) => {
     try {
       const uid = user.uid;
@@ -86,128 +98,152 @@ export default function CreateTimerPage() {
     }
   };
 
+  const minOptions = Array.from({ length: 99 }, (_, index) => index);
+  const secOptions = Array.from({ length: 59 }, (_, index) => index);
+
   return (
     <form className="new-timer px-2" onSubmit={handleSubmit}>
-      <div className="d-flex justify-content-between p-2">
+      <div className="d-flex justify-content-between p-2 border-me">
         <label htmlFor="timerName">Name</label>
-        <input
-          type="text"
-          id="timerName"
-          name="name"
-          placeholder="Name"
-          // value={timerData.name}
-          onChange={handleInputChange}
-        />
-      </div>
-
-      <div className="d-flex justify-content-between p-2">
-        <label htmlFor="timerName">Work</label>
-        <div className='d-flex'>
+        <div>
           <input
             type="text"
             id="timerName"
-            name="exerciseMin"
-            placeholder="min"
-            // value={timerData.name}
-            onChange={handleInputChange}
-          /> 
-          :
-          <input
-            type="text"
-            id="timerName"
-            name="exerciseSec"
-            placeholder="sec"
+            name="name"
+            placeholder="Name"
             // value={timerData.name}
             onChange={handleInputChange}
           />
         </div>
       </div>
 
-      <div className="d-flex justify-content-between p-2">
+      <div className="d-flex justify-content-between p-2 border-me">
+        <label htmlFor="timerName">Work</label>
+        <div className=''>
+          <select
+            id="workMinutes"
+            name="exerciseMin"
+            // size={2}
+            maxMenuHeight={30}
+
+            value={timerData.exerciseMin}
+            onChange={handleInputChange}
+          >
+            {minOptions.map((value) => (
+              <option key={value} value={value}>{String(value).padStart(2, '0')}</option>
+            ))}
+          </select>
+          :
+          <select
+            id="workSeconds"
+            name="exerciseSec"
+            value={timerData.exerciseSec}
+            onChange={handleInputChange}
+          >
+            {secOptions.map((value) => (
+              <option key={value} value={value}>{String(value).padStart(2, '0')}</option>
+            ))}
+          </select>
+          {/* <Min/> */}
+        </div>
+      </div>
+
+      <div className="d-flex justify-content-between p-2 border-me">
         <label htmlFor="timerName">Rest</label>
         <div className='d-flex'>
-          <input
-            type="text"
-            id="timerName"
-            name="restMin"
-            placeholder="min"
-            // value={timerData.name}
-            onChange={handleInputChange}
-          /> 
-          :
-          <input
-            type="text"
-            id="timerName"
-            name="restSec"
-            placeholder="sec"
-            // value={timerData.name}
-            onChange={handleInputChange}
-          />
+          <select
+              id="workMinutes"
+              name="restMin"
+              value={timerData.restMin}
+              onChange={handleInputChange}
+            >
+              {minOptions.map((value) => (
+                <option key={value} value={value}>{String(value).padStart(2, '0')}</option>
+              ))}
+            </select>
+            :
+            <select
+              id="workSeconds"
+              name="restSec"
+              value={timerData.restSec}
+              onChange={handleInputChange}
+            >
+              {secOptions.map((value) => (
+                <option key={value} value={value}>{String(value).padStart(2, '0')}</option>
+              ))}
+            </select>
         </div>
       </div>
 
-      <div className="d-flex justify-content-between p-2">
+      <div className="d-flex justify-content-between p-2 border-me">
         <label htmlFor="timerName">Rounds</label>
-          <input
-            type="text"
-            id="timerName"
+        <div>
+          <select
+            id="workMinutes"
             name="rounds"
-            placeholder="1"
-            // value={timerData.name}
+            value={timerData.rounds}
             onChange={handleInputChange}
-          />
+            className='max75 text-center'
+          >
+            {minOptions.map((value) => (
+              <option key={value} value={value}>{String(value).padStart(2, '0')}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="d-flex justify-content-between p-2">
+      <div className="d-flex justify-content-between p-2 border-me">
         <label htmlFor="timerName">Cycles</label>
-          <input
-            type="text"
-            id="timerName"
+        <div>
+          <select
+            id="workMinutes"
             name="cycles"
-            placeholder="sec"
-            // value={timerData.name}
+            value={timerData.cycles}
             onChange={handleInputChange}
-          />
+            className='max75 text-center'
+          >
+            {minOptions.map((value) => (
+              <option key={value} value={value}>{String(value).padStart(2, '0')}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="d-flex justify-content-between p-2">
+      <div className="d-flex justify-content-between p-2 border-me">
         <label htmlFor="timerName">Cycle Recovery</label>
         <div>
-          <input
-            type="text"
-            id="timerName"
-            name="cycleRestMin"
-            placeholder="min"
-            // value={timerData.name}
-            onChange={handleInputChange}
-          /> 
-          :
-          <input
-            type="text"
-            id="timerName"
-            name="cycleRestSec"
-            placeholder="sec"
-            // value={timerData.name}
-            onChange={handleInputChange}
-          />
+          <select
+              id="workMinutes"
+              name="cycleRestMin"
+              value={timerData.cycleRestMin}
+              onChange={handleInputChange}
+            >
+              {minOptions.map((value) => (
+                <option key={value} value={value}>{String(value).padStart(2, '0')}</option>
+              ))}
+            </select>
+            :
+            <select
+              id="workSeconds"
+              name="cycleRestSec"
+              value={timerData.cycleRestSec}
+              onChange={handleInputChange}
+            >
+              {secOptions.map((value) => (
+                <option key={value} value={value}>{String(value).padStart(2, '0')}</option>
+              ))}
+            </select>
         </div>
       </div>
 
-      <div className="d-flex justify-content-between p-2">
+      <div className="d-flex justify-content-between p-2 border-me">
         <label htmlFor="timerName">Color</label>
-        <div>
-          <input
-            type="text"
-            id="timerName"
-            name="cycleRestMin"
-            placeholder="Color"
-            // value={timerData.name}
-            onChange={handleInputChange}
-          /> 
+        <div className='pe-2'>
+          <ColorSelector selectedColor={selectedColor} setSelectedColor={setSelectedColor}/>
         </div>
       </div>
 
-      <button className='btn btn-primary mt-3' type="submit">Start Workout</button>
+      <button className='new-timer-btn' type="submit">Start Workout</button>
     </form>
   );
 };
