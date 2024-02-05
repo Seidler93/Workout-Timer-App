@@ -8,6 +8,22 @@ export default function CreateTimerPage() {
   const {setTimers, setCurrentTimer, user} = useUserContext()
   const navigate = useNavigate();
 
+  function capitalizeFirstLetter(str) {
+    // Check if the string is not empty
+    if (str.length === 0) {
+      return str;
+    }
+  
+    // Capitalize the first letter and concatenate the rest of the string
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  const getRandomColor = () => {
+    const colors = ['#EAC435', '#345995', '#E40066','#03CEA4','#FB4D3D',]
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+  }
+
   const [timerData, setTimerData] = useState({
     id: Math.random().toString(36).substring(2), 
     name: 'Default', 
@@ -18,7 +34,8 @@ export default function CreateTimerPage() {
     rounds: 5,
     cycles: 1,
     cycleRestMin: 0,
-    cycleRestSec: 0,  
+    cycleRestSec: 0,
+    color: getRandomColor(), 
   });
 
   const handleSubmit = (e) => {
@@ -27,7 +44,7 @@ export default function CreateTimerPage() {
     // Convert numerical input strings to numbers
     const timerToAdd = {
       id: timerData.id,
-      name: timerData.name,
+      name: capitalizeFirstLetter(timerData.name),
       exerciseMin: parseInt(timerData.exerciseMin, 10), 
       exerciseSec: parseInt(timerData.exerciseSec, 10),
       restMin: parseInt(timerData.restMin, 10),
@@ -36,6 +53,7 @@ export default function CreateTimerPage() {
       cycles: parseInt(timerData.cycles, 10),
       cycleRestMin: parseInt(timerData.cycleRestMin, 10),
       cycleRestSec: parseInt(timerData.cycleRestSec, 10),
+      color: timerData.color
     };
 
     setCurrentTimer(timerToAdd)
@@ -70,7 +88,7 @@ export default function CreateTimerPage() {
 
   return (
     <>
-      <Link to="/">Back</Link>
+      <Link to="/" className='back-btn'>Back</Link>
 
       <form className="new-timer px-2" onSubmit={handleSubmit}>
         <div className="d-flex justify-content-between p-2">
@@ -175,6 +193,20 @@ export default function CreateTimerPage() {
               // value={timerData.name}
               onChange={handleInputChange}
             />
+          </div>
+        </div>
+
+        <div className="d-flex justify-content-between p-2">
+          <label htmlFor="timerName">Color</label>
+          <div>
+            <input
+              type="text"
+              id="timerName"
+              name="cycleRestMin"
+              placeholder="Color"
+              // value={timerData.name}
+              onChange={handleInputChange}
+            /> 
           </div>
         </div>
 

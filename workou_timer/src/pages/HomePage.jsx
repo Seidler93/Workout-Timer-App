@@ -24,6 +24,7 @@ export default function HomePage() {
       cycles: 3,
       cycleRestMin: 0,
       cycleRestSec: 7,
+      color: '#345995'
     },
     {
       id: 2, 
@@ -33,9 +34,10 @@ export default function HomePage() {
       restMin: 0,
       restSec: 0,
       rounds: 15,
-      cycles: 0,
+      cycles: 1,
       cycleRestMin: 0,
       cycleRestSec: 0,
+      color: '#EAC435'
     },
   ]
 

@@ -9,7 +9,6 @@ export function Navbar() {
     <nav>
       <h2>Gym Timer</h2>
       <Link to={'/profile'}><img src={user?.photoURL} /></Link>
-
     </nav>
   )
 }

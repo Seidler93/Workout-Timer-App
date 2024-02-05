@@ -4,11 +4,13 @@ body {
 
 .app {
   width: 100%;
+  height: 100vh;
   padding-top: 6rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
+  background-color: #f0f0f0;
 }
 
 nav {
@@ -17,31 +19,49 @@ nav {
   right: 0;
   left: 0;
   height: 5rem;
-  background-color: black;
+  background-color: #f0f0f0;
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
+nav img {
+    width: 50px;
+    border-radius: 50%;
+}
+
 nav h2 {
-  color: white;
+  color: black;
+  margin: 0!important;
 }
 
 .timer-container {
-  width: 100%;
-  max-width: 800px;
-  min-width: 300px;
+  width: 100vw;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
+  padding: 0 10px;
 }
 
 .new-timer-btn,
 .timer-card {
-  border: 2px solid black;
+  width: 100%;
+  max-width: 900px;
   padding: 10px 20px;
-  margin: 10px;
-  border-radius: 6px;
+  margin-top: 10px;
+  border-radius: 16px;
   cursor: pointer;
+  text-decoration: none;
+  color: white;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.new-timer-btn {
+  font-size: calc(1.325rem + .9vw);
+  text-align: center;
+  background-color: #FB4D3D;
 }
 
 .new-timer {
@@ -70,9 +90,9 @@ nav h2 {
     font-family: 'Montserrat', sans-serif;
 }
 
-body{
+body {
     background-color: #c9d6ff;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    /* background: linear-gradient(to right, #e2e2e2, #c9d6ff); */
     display: flex;
     align-items: center;
     justify-content: center;
