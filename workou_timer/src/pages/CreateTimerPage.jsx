@@ -87,131 +87,127 @@ export default function CreateTimerPage() {
   };
 
   return (
-    <>
-      <Link to="/" className='back-btn'>Back</Link>
+    <form className="new-timer px-2" onSubmit={handleSubmit}>
+      <div className="d-flex justify-content-between p-2">
+        <label htmlFor="timerName">Name</label>
+        <input
+          type="text"
+          id="timerName"
+          name="name"
+          placeholder="Name"
+          // value={timerData.name}
+          onChange={handleInputChange}
+        />
+      </div>
 
-      <form className="new-timer px-2" onSubmit={handleSubmit}>
-        <div className="d-flex justify-content-between p-2">
-          <label htmlFor="timerName">Name</label>
+      <div className="d-flex justify-content-between p-2">
+        <label htmlFor="timerName">Work</label>
+        <div className='d-flex'>
           <input
             type="text"
             id="timerName"
-            name="name"
-            placeholder="Name"
+            name="exerciseMin"
+            placeholder="min"
+            // value={timerData.name}
+            onChange={handleInputChange}
+          /> 
+          :
+          <input
+            type="text"
+            id="timerName"
+            name="exerciseSec"
+            placeholder="sec"
             // value={timerData.name}
             onChange={handleInputChange}
           />
         </div>
+      </div>
 
-        <div className="d-flex justify-content-between p-2">
-          <label htmlFor="timerName">Work</label>
-          <div>
-            <input
-              type="text"
-              id="timerName"
-              name="exerciseMin"
-              placeholder="min"
-              // value={timerData.name}
-              onChange={handleInputChange}
-            /> 
-            :
-            <input
-              type="text"
-              id="timerName"
-              name="exerciseSec"
-              placeholder="sec"
-              // value={timerData.name}
-              onChange={handleInputChange}
-            />
-          </div>
+      <div className="d-flex justify-content-between p-2">
+        <label htmlFor="timerName">Rest</label>
+        <div className='d-flex'>
+          <input
+            type="text"
+            id="timerName"
+            name="restMin"
+            placeholder="min"
+            // value={timerData.name}
+            onChange={handleInputChange}
+          /> 
+          :
+          <input
+            type="text"
+            id="timerName"
+            name="restSec"
+            placeholder="sec"
+            // value={timerData.name}
+            onChange={handleInputChange}
+          />
         </div>
+      </div>
 
-        <div className="d-flex justify-content-between p-2">
-          <label htmlFor="timerName">Rest</label>
-          <div>
-            <input
-              type="text"
-              id="timerName"
-              name="restMin"
-              placeholder="min"
-              // value={timerData.name}
-              onChange={handleInputChange}
-            /> 
-            :
-            <input
-              type="text"
-              id="timerName"
-              name="restSec"
-              placeholder="sec"
-              // value={timerData.name}
-              onChange={handleInputChange}
-            />
-          </div>
+      <div className="d-flex justify-content-between p-2">
+        <label htmlFor="timerName">Rounds</label>
+          <input
+            type="text"
+            id="timerName"
+            name="rounds"
+            placeholder="1"
+            // value={timerData.name}
+            onChange={handleInputChange}
+          />
+      </div>
+
+      <div className="d-flex justify-content-between p-2">
+        <label htmlFor="timerName">Cycles</label>
+          <input
+            type="text"
+            id="timerName"
+            name="cycles"
+            placeholder="sec"
+            // value={timerData.name}
+            onChange={handleInputChange}
+          />
+      </div>
+
+      <div className="d-flex justify-content-between p-2">
+        <label htmlFor="timerName">Cycle Recovery</label>
+        <div>
+          <input
+            type="text"
+            id="timerName"
+            name="cycleRestMin"
+            placeholder="min"
+            // value={timerData.name}
+            onChange={handleInputChange}
+          /> 
+          :
+          <input
+            type="text"
+            id="timerName"
+            name="cycleRestSec"
+            placeholder="sec"
+            // value={timerData.name}
+            onChange={handleInputChange}
+          />
         </div>
+      </div>
 
-        <div className="d-flex justify-content-between p-2">
-          <label htmlFor="timerName">Rounds</label>
-            <input
-              type="text"
-              id="timerName"
-              name="rounds"
-              placeholder="sec"
-              // value={timerData.name}
-              onChange={handleInputChange}
-            />
+      <div className="d-flex justify-content-between p-2">
+        <label htmlFor="timerName">Color</label>
+        <div>
+          <input
+            type="text"
+            id="timerName"
+            name="cycleRestMin"
+            placeholder="Color"
+            // value={timerData.name}
+            onChange={handleInputChange}
+          /> 
         </div>
+      </div>
 
-        <div className="d-flex justify-content-between p-2">
-          <label htmlFor="timerName">Cycles</label>
-            <input
-              type="text"
-              id="timerName"
-              name="cycles"
-              placeholder="sec"
-              // value={timerData.name}
-              onChange={handleInputChange}
-            />
-        </div>
-
-        <div className="d-flex justify-content-between p-2">
-          <label htmlFor="timerName">Cycle Recovery</label>
-          <div>
-            <input
-              type="text"
-              id="timerName"
-              name="cycleRestMin"
-              placeholder="min"
-              // value={timerData.name}
-              onChange={handleInputChange}
-            /> 
-            :
-            <input
-              type="text"
-              id="timerName"
-              name="cycleRestSec"
-              placeholder="sec"
-              // value={timerData.name}
-              onChange={handleInputChange}
-            />
-          </div>
-        </div>
-
-        <div className="d-flex justify-content-between p-2">
-          <label htmlFor="timerName">Color</label>
-          <div>
-            <input
-              type="text"
-              id="timerName"
-              name="cycleRestMin"
-              placeholder="Color"
-              // value={timerData.name}
-              onChange={handleInputChange}
-            /> 
-          </div>
-        </div>
-
-        <button type="submit">Start Workout</button>
-      </form>
-    </>
+      <button className='btn btn-primary mt-3' type="submit">Start Workout</button>
+    </form>
   );
 };

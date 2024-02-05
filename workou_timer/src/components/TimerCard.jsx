@@ -42,9 +42,10 @@ export default function TimerCard({timer}) {
           <p>Total: {calculateTotalTime(timer)}</p>
           {timer.cycles > 1 && <p>Cycles: {timer.cycles}</p>}
         </div>
-        <div>
+        <div className="text-end">
           <p>Work: {timer.exerciseMin}:{formatTwoDigits(timer.exerciseSec)}</p>
           <p>Rest: {timer.restMin}:{formatTwoDigits(timer.exerciseSec)}</p>
+          {timer.cycles > 1 && <p>Cycle Rest: {timer.cycleRestMin}:{formatTwoDigits(timer.cycleRestSec)}</p>}
         </div>
       </div>
     </div>

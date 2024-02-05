@@ -3,6 +3,7 @@ import { auth, firestore } from '../utils/firebase';
 import { useUserContext } from '../utils/UserContext';
 import { Outlet, useNavigate } from 'react-router-dom';
 import LoginPage from '../pages/LoginPage';
+import { Navbar } from '../components/Navbar';
 
 const AuthStateInitializer = () => {
   const { user, setUser } = useUserContext();
@@ -47,7 +48,12 @@ const AuthStateInitializer = () => {
   };
 
   if (user) {
-    return <Outlet/>
+    return (
+      <>
+        <Navbar/>
+        <Outlet/>
+      </>
+    )
   } else {
     return <LoginPage/>
   }

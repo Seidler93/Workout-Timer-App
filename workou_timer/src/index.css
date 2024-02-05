@@ -21,10 +21,11 @@ nav {
   height: 5rem;
   background-color: #f0f0f0;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 
+.back-btn,
 nav img {
     width: 50px;
     border-radius: 50%;
@@ -35,6 +36,14 @@ nav h2 {
   margin: 0!important;
 }
 
+.back-btn {
+    background-color: #345995;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .timer-container {
   width: 100vw;
   display: flex;
@@ -42,6 +51,10 @@ nav h2 {
   align-items: center;
   flex-direction: column;
   padding: 0 10px;
+}
+
+.new-timer input {
+    width: 70px;
 }
 
 .new-timer-btn,
@@ -65,8 +78,25 @@ nav h2 {
 }
 
 .new-timer {
-  display: flex;
+    height: 100lvh;
+    width: 100vw;
+    padding: 5rem 15px 0;
+    display: flex;
   flex-direction: column;
+  justify-content: start;
+}
+
+.new-timer div {
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid rgb(80, 80, 80);
+}
+
+.new-timer input {
+    border: none;
+    text-align: center;
 }
 
 .rest {

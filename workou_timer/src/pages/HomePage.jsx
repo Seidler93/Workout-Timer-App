@@ -62,7 +62,6 @@ export default function HomePage() {
 
   return (
     <div className="app">
-      <Navbar/>
       <div className='timer-container'>
         <Link to={'/create'} className='new-timer-btn'>New Timer</Link>
         {defaultTimers.map(timer => <TimerCard key={timer.id} timer={timer}/>)}
