@@ -45,12 +45,83 @@ nav h2 {
   margin: 0!important;
 }
 
+.nav-timer {
+    background-color: transparent!important;
+}
+
 .back-btn {
     background-color: #345995;
     height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.working {
+    background-color: rgb(221, 76, 76);
+}
+
+.starting {
+    background-color: black;
+}
+
+.resting {
+    background-color: rgb(66, 177, 66);
+}
+
+.cycle-rest {
+    background-color: #345995;
+}
+
+.timer * {
+    color: white;
+}
+
+.timer-page-containter {
+    width: 100vw;
+    height: 100vh;
+    padding: 5rem 10px;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+.timer {
+    max-width: 1000px;
+    width: 100%;
+}
+
+.clock {
+    padding-top: 5rem;
+    font-size: 8rem;
+    text-align: center;
+}
+
+.start-btn {
+    margin-top: 5rem;
+    width: 11rem;
+    height: 11rem;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    background-color: #EAC435;
+    border: none;
+}
+
+.info {
+    margin-top: 3rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.info p {
+    font-size: 2rem;
 }
 
 .timer-container {
@@ -154,7 +225,6 @@ select:focus {
     position: relative;
 }
   
-
 .new-timer-btn,
 .timer-card {
   width: 100%;
@@ -186,7 +256,7 @@ select:focus {
 }
 
 .new-timer div {
-    height: 10%;
+    height: 8%;
     display: flex;
     justify-content: center;
     align-items: center;
