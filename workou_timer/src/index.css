@@ -65,6 +65,7 @@ nav h2 {
     background-color: rgb(221, 76, 76);
 }
 
+.countdown,
 .starting {
     background-color: black;
 }
@@ -94,6 +95,8 @@ nav h2 {
     max-width: 1000px;
     width: 100%;
 }
+
+
 
 .clock {
     padding-top: 5rem;
@@ -583,6 +586,20 @@ body {
     .cont.active .toggle-right{
         transform: translateY(200%);
 
+    }
+}
+
+@media screen and (orientation: portrait) {
+    .timer-ls {
+        display: none!important;
+    }
+
+    .timer-ls * {
+        display: none!important;
+    }
+
+    .clock-ls {
+        display: none!important;
     }
 }
 

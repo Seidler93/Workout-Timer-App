@@ -2,29 +2,43 @@ import { useState, useEffect } from 'react';
 import { useUserContext } from '../utils/UserContext';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import CompletedModal from '../components/CompletedModal';
 
 let countdown;
+let countdown10s;
 
 const TimerPage = () => {
   const {currentTimer, user} = useUserContext()
   const navigate = useNavigate();
-
-  const bgStates = ['start', 'working', 'resting', 'cycle-rest']
+  const [showModal, setShowModal] = useState(false);
 
   const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  const [seconds, setSeconds] = useState(10);
   const [currentRound, setCurrentRound] = useState(1);
   const [currentCycle, setCurrentCycle] = useState(1);
   const [isRunning, setIsRunning] = useState(false);
-  const [isRestPhase, setIsRestPhase] = useState(false);
-  const [message, setMessage] = useState('starting');
-  const [bgState, setBgState] = useState(bgStates[0]);  
+  const [isRestPhase, setIsRestPhase] = useState(false);  
   const [timerState, setTimerState] = useState('starting')
+  const [rounds, setRounds] = useState([])
+
+  // useEffect(() => {
+  //   setMinutes(currentTimer.exerciseMin);
+  //   setSeconds(currentTimer.exerciseSec);
+  // }, [currentTimer.rounds, currentTimer.exerciseMin, currentTimer.exerciseSec]);
 
   useEffect(() => {
-    setMinutes(currentTimer.exerciseMin);
-    setSeconds(currentTimer.exerciseSec);
-  }, [currentTimer.rounds, currentTimer.exerciseMin, currentTimer.exerciseSec]);
+    // Create rounds array based on currentTimer object
+    const newRounds = [];
+    for (let i = 0; i < currentTimer.rounds; i++) {
+      newRounds.push({
+        workMin: currentTimer.exerciseMin,
+        workSec: currentTimer.exerciseSec,
+        restMin: currentTimer.restMin,
+        restSec: currentTimer.restSec
+      });
+    }
+    setRounds(newRounds);
+  }, [currentTimer]);
 
   const reduceMin = () => {
     if (minutes === 0) {
@@ -47,8 +61,6 @@ const TimerPage = () => {
       setSeconds(currentTimer.restSec);
       setIsRestPhase(true);
       setTimerState('resting')
-      setBgState(bgStates[2])
-      setMessage('begin rest')
     }
   };
 
@@ -59,16 +71,12 @@ const TimerPage = () => {
       setIsRestPhase(false);
       setTimerState('working')
       setCurrentRound((prevRound) => prevRound + 1);
-      setMessage('increase round')
-      setBgState(bgStates[1])
     } else if (currentCycle < currentTimer.cycles) {
       startNextCycle();
-      setBgState(bgStates[3])
-      setMessage('increase cycle')
     } else {
       clearInterval(countdown);
       setIsRunning(false);
-      setMessage("All rounds and cycles completed!");
+      setShowModal(true)
     }
   };
 
@@ -79,26 +87,42 @@ const TimerPage = () => {
     setIsRestPhase(true);
     setCurrentRound(1);
     setTimerState('cycle-rest')
-    setMessage('start next cycle')
   };
+
+  const restart = () => {
+    setTimerState('starting')
+    setMinutes(0)
+    setSeconds(10)
+    setCurrentRound(1)
+    setCurrentCycle(1)
+    setShowModal(false)
+  }
 
   useEffect(() => {
     if (isRunning) {
       countdown = setInterval(() => {
         if (seconds === 0) {
-          reduceMin();
+          if (timerState === 'countdown') {
+            setTimerState('working')
+            setMinutes(currentTimer.exerciseMin);
+            setSeconds(currentTimer.exerciseSec);
+          } else {
+            reduceMin();
+          }
         } else {
           setSeconds((prevSeconds) => prevSeconds - 1);
         }
       }, 1000);
     }
 
-    return () => clearInterval(countdown);
+    return () => {
+      clearInterval(countdown);
+    };
   }, [minutes, seconds, currentRound, currentCycle, isRunning, isRestPhase, currentTimer]);
 
   const handleStartPause = () => {
     if (timerState === 'starting') {
-      setTimerState('working')
+      setTimerState('countdown')
     }
     setIsRunning((prevIsRunning) => !prevIsRunning);
   };
@@ -106,7 +130,6 @@ const TimerPage = () => {
   return (
     <div className={`timer-page-containter ${timerState}`}>
       <div className='timer'>
-        {/* <p>{message}</p> */}
         <p className='text-white clock'>{`${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}</p>
         <div className='info'>
           <p>Round <span className='ps-4'>{currentRound}/{currentTimer.rounds}</span></p>
@@ -116,7 +139,6 @@ const TimerPage = () => {
         </div>
       </div>
       <div className='timer-ls d-flex justify-content-center align-items-center'>
-        {/* <p>{message}</p> */}
         <p className='text-white clock-ls'>{`${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}</p>
         <div className='info-ls d-flex '>
           <p>Round <span className='ps-4'>{currentRound}/{currentTimer.rounds}</span></p>
@@ -125,6 +147,7 @@ const TimerPage = () => {
           <p className='text-white wf'>{`${isRestPhase ? 'REST' : 'WORK'}`}</p>
         </div>
       </div>
+      <CompletedModal showModal={showModal} setShowModal={setShowModal} restart={restart}/>
     </div>
   );
 };
