@@ -11,6 +11,10 @@ body {
   margin: 0;
 }
 
+p {
+    margin: 0;
+}
+
 .app {
   width: 100%;
   height: 100vh;
@@ -580,4 +584,60 @@ body {
         transform: translateY(200%);
 
     }
+}
+
+@media screen and (orientation: landscape) {
+    .timer {
+        display: none;
+    }
+
+    .timer-ls {
+        position: relative;
+        width: 100%;
+    }
+
+    .timer-ls * {
+        color: white;
+    }
+
+    .clock-ls {
+        font-size: 12rem;
+        /* padding-top: 2rem; */
+        position: fixed;
+        top: 12%;
+    }
+
+    .wf {
+        width: 100px;
+        text-align: center;
+    }
+
+    .info-ls {
+        position: fixed;
+        bottom: 0;
+        font-size: x-large;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding-bottom: 1.5rem;
+    }
+
+    .start-btn-ls {
+        padding: 0;
+        margin: 0;
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+        background-color: #EAC435;
+        border: none;
+    }
+
+
+
 }

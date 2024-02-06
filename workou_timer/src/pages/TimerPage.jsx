@@ -115,6 +115,16 @@ const TimerPage = () => {
           <button onClick={handleStartPause} className='start-btn'>{isRunning ? 'Pause' : 'Start'}</button>
         </div>
       </div>
+      <div className='timer-ls d-flex justify-content-center align-items-center'>
+        {/* <p>{message}</p> */}
+        <p className='text-white clock-ls'>{`${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}</p>
+        <div className='info-ls d-flex '>
+          <p>Round <span className='ps-4'>{currentRound}/{currentTimer.rounds}</span></p>
+          {currentTimer.cycles > 1 && <p>Cycle <span className='ps-4'>{currentCycle}/{currentTimer.cycles}</span></p>}
+          <button onClick={handleStartPause} className='start-btn-ls'>{isRunning ? 'Pause' : 'Start'}</button>
+          <p className='text-white wf'>{`${isRestPhase ? 'REST' : 'WORK'}`}</p>
+        </div>
+      </div>
     </div>
   );
 };
