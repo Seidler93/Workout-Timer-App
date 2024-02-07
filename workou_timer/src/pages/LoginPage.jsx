@@ -72,7 +72,9 @@ export default function LoginPage() {
       uid: userData.uid,
       email: userData.email,
       photoURL: userData.photoURL,
-      displayName: userData.displayName
+      displayName: userData.displayName,
+      countdownMin: 0, // Set default countdown minutes
+      countdownSec: 0, // Set default countdown seconds
     };
 
     const userDoc = firestore.doc(`users/${userData.uid}`);
@@ -94,9 +96,6 @@ export default function LoginPage() {
     }
   };
 
-  // 1. user signed out <SignInButton />
-  // 2. user signed in, but missing username <UsernameForm />
-  // 3. user signed in, has username <SignOutButton />
   return (
     <div className={`cont ${hidden && 'active'}`} id='cont'>
       <div className='form-cont sign-up'>

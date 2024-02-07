@@ -100,6 +100,7 @@ export default function CreateTimerPage() {
 
   const minOptions = Array.from({ length: 99 }, (_, index) => index);
   const secOptions = Array.from({ length: 59 }, (_, index) => index);
+  const roundOptions = Array.from({ length: 59 }, (_, index) => index + 1);
 
   return (
     <form className="new-timer px-2" onSubmit={handleSubmit}>
@@ -185,7 +186,7 @@ export default function CreateTimerPage() {
             onChange={handleInputChange}
             className='max75 text-center'
           >
-            {minOptions.map((value) => (
+            {roundOptions.map((value) => (
               <option key={value} value={value}>{String(value).padStart(2, '0')}</option>
             ))}
           </select>
@@ -202,7 +203,7 @@ export default function CreateTimerPage() {
             onChange={handleInputChange}
             className='max75 text-center'
           >
-            {minOptions.map((value) => (
+            {roundOptions.map((value) => (
               <option key={value} value={value}>{String(value).padStart(2, '0')}</option>
             ))}
           </select>

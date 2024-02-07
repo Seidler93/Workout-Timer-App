@@ -16,7 +16,7 @@ p {
 }
 
 .app {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   padding-top: 6rem;
   display: flex;
@@ -47,6 +47,10 @@ nav img {
 nav h2 {
   color: black;
   margin: 0!important;
+}
+
+.settings-cont {
+    max-width: 1000pc;
 }
 
 .nav-timer {
@@ -108,13 +112,12 @@ nav h2 {
 
 
 .clock {
-    padding-top: 5rem;
+    padding-top: 3rem;
     font-size: 8rem;
     text-align: center;
 }
 
 .start-btn {
-    margin-top: 5rem;
     width: 11rem;
     height: 11rem;
     border-radius: 50%;

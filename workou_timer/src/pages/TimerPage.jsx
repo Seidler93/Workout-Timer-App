@@ -16,22 +16,14 @@ const TimerPage = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [isRestPhase, setIsRestPhase] = useState(false);  
   const [timerState, setTimerState] = useState('starting')
-  const [rounds, setRounds] = useState([])
-
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
-    // Create rounds array based on currentTimer object
-    const newRounds = [];
-    for (let i = 0; i < currentTimer.rounds; i++) {
-      newRounds.push({
-        workMin: currentTimer.exerciseMin,
-        workSec: currentTimer.exerciseSec,
-        restMin: currentTimer.restMin,
-        restSec: currentTimer.restSec
-      });
+    if (user) {
+      setMinutes(user.countdownMin);
+      setSeconds(user.countdownSec);
     }
-    setRounds(newRounds);
-  }, [currentTimer]);
+  }, [user])
 
   const reduceMin = () => {
     if (minutes === 0) {
@@ -86,8 +78,8 @@ const TimerPage = () => {
 
   const restart = () => {
     setTimerState('starting')
-    setMinutes(0)
-    setSeconds(10)
+    setMinutes(user.countdownMin);
+    setSeconds(user.countdownSec);
     setCurrentRound(1)
     setCurrentCycle(1)
     setShowModal(false)
@@ -98,12 +90,12 @@ const TimerPage = () => {
       return
     } else if (timerState === 'countdown') {
       setTimerState('starting')
-      setMinutes(0)
-      setSeconds(10)
+      setMinutes(user.countdownMin);
+      setSeconds(user.countdownSec);
     } else if (timerState === 'working' && currentRound === 1 && currentCycle === 1) {
       setTimerState('starting')
-      setMinutes(0)
-      setSeconds(10)
+      setMinutes(user.countdownMin);
+      setSeconds(user.countdownSec);
     } else if (timerState === 'working' && currentRound === 1) {
       setCurrentRound(1)
       setTimerState('cycle-rest')
@@ -182,7 +174,11 @@ const TimerPage = () => {
           <p>Round <span className='ps-4'>{currentRound}/{currentTimer.rounds}</span></p>
           {currentTimer.cycles > 1 && <p>Cycle <span className='ps-4'>{currentCycle}/{currentTimer.cycles}</span></p>}
           <p className='text-white'>{`${isRestPhase ? 'REST' : 'WORK'}`}</p>
-          <button onClick={handleStartPause} className='start-btn'>{isRunning ? 'Pause' : 'Start'}</button>
+          <div className='d-flex justify-content-center align-items-center pt-4'>
+            <button onClick={() => previous()} className='timer-nav'><Icon icon="ooui:next-rtl" /></button>
+            <button onClick={handleStartPause} className='start-btn mx-3'>{isRunning ? <Icon icon="ic:baseline-pause" width="40" height="40"/> : <Icon icon="solar:play-bold" width="40" height="40"/>}</button>
+            <button onClick={() => next()} className='timer-nav'><Icon icon="ooui:next-ltr" /></button>
+          </div>        
         </div>
       </div>
       <div className='timer-ls d-flex justify-content-center align-items-center'>
@@ -192,10 +188,12 @@ const TimerPage = () => {
           {currentTimer.cycles > 1 && <p>Cycle <span className='ps-4'>{currentCycle}/{currentTimer.cycles}</span></p>}
         </div>
         <div className='info-ls d-flex '>
-          <button onClick={() => previous()} className='timer-nav'><Icon icon="ooui:next-rtl" /></button>
-          <button onClick={handleStartPause} className='start-btn-ls'>{isRunning ? <Icon icon="ic:baseline-pause" width="40" height="40"/> : <Icon icon="solar:play-bold" width="40" height="40"/>}</button>
-          <button onClick={() => next()} className='timer-nav'><Icon icon="ooui:next-ltr" /></button>
-          <p className='text-white wf'>{`${isRestPhase ? 'REST' : 'WORK'}`}</p>
+          <div className='d-flex justify-content-center align-items-center'>
+            <button onClick={() => previous()} className='timer-nav'><Icon icon="ooui:next-rtl" /></button>
+            <button onClick={handleStartPause} className='start-btn-ls mx-3'>{isRunning ? <Icon icon="ic:baseline-pause" width="40" height="40"/> : <Icon icon="solar:play-bold" width="40" height="40"/>}</button>
+            <button onClick={() => next()} className='timer-nav'><Icon icon="ooui:next-ltr" /></button>
+          </div>
+          <p className='text-white wf'>{message}</p>
           <button onClick={() => restart()} className='timer-nav'><Icon icon="codicon:debug-restart" /></button>
         </div>
       </div>
