@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useUserContext } from '../utils/UserContext';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import CompletedModal from '../components/CompletedModal';
+import { Icon } from '@iconify/react';
 
 let countdown;
-let countdown10s;
 
 const TimerPage = () => {
   const {currentTimer, user} = useUserContext()
-  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
 
   const [minutes, setMinutes] = useState(0);
@@ -21,10 +18,6 @@ const TimerPage = () => {
   const [timerState, setTimerState] = useState('starting')
   const [rounds, setRounds] = useState([])
 
-  // useEffect(() => {
-  //   setMinutes(currentTimer.exerciseMin);
-  //   setSeconds(currentTimer.exerciseSec);
-  // }, [currentTimer.rounds, currentTimer.exerciseMin, currentTimer.exerciseSec]);
 
   useEffect(() => {
     // Create rounds array based on currentTimer object
@@ -199,11 +192,11 @@ const TimerPage = () => {
           {currentTimer.cycles > 1 && <p>Cycle <span className='ps-4'>{currentCycle}/{currentTimer.cycles}</span></p>}
         </div>
         <div className='info-ls d-flex '>
-          <button onClick={() => previous()}>previous</button>
-          <button onClick={handleStartPause} className='start-btn-ls'>{isRunning ? 'Pause' : 'Start'}</button>
-          <button onClick={() => next()}>next</button>
+          <button onClick={() => previous()} className='timer-nav'><Icon icon="ooui:next-rtl" /></button>
+          <button onClick={handleStartPause} className='start-btn-ls'>{isRunning ? <Icon icon="ic:baseline-pause" width="40" height="40"/> : <Icon icon="solar:play-bold" width="40" height="40"/>}</button>
+          <button onClick={() => next()} className='timer-nav'><Icon icon="ooui:next-ltr" /></button>
           <p className='text-white wf'>{`${isRestPhase ? 'REST' : 'WORK'}`}</p>
-          <button onClick={() => restart()}>restart</button>
+          <button onClick={() => restart()} className='timer-nav'><Icon icon="codicon:debug-restart" /></button>
         </div>
       </div>
       <CompletedModal showModal={showModal} setShowModal={setShowModal} restart={restart}/>
