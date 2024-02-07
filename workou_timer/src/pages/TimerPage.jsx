@@ -69,8 +69,10 @@ const TimerPage = () => {
       setMinutes(currentTimer.exerciseMin);
       setSeconds(currentTimer.exerciseSec);
       setIsRestPhase(false);
+      if (timerState !== 'cycle-rest') {
+        setCurrentRound((prevRound) => prevRound + 1);
+      }
       setTimerState('working')
-      setCurrentRound((prevRound) => prevRound + 1);
     } else if (currentCycle < currentTimer.cycles) {
       startNextCycle();
     } else {
@@ -96,6 +98,58 @@ const TimerPage = () => {
     setCurrentRound(1)
     setCurrentCycle(1)
     setShowModal(false)
+  }
+
+  const previous = () => {
+    if (timerState === 'starting') {
+      return
+    } else if (timerState === 'countdown') {
+      setTimerState('starting')
+      setMinutes(0)
+      setSeconds(10)
+    } else if (timerState === 'working' && currentRound === 1 && currentCycle === 1) {
+      setTimerState('starting')
+      setMinutes(0)
+      setSeconds(10)
+    } else if (timerState === 'working' && currentRound === 1) {
+      setCurrentRound(1)
+      setTimerState('cycle-rest')
+      setIsRestPhase(true);
+      setMinutes(currentTimer.cycleRestMin)
+      setSeconds(currentTimer.cycleRestSec)
+      return
+    } else if (timerState === 'working' && currentRound > 1) {
+      setCurrentRound((prevRound) => prevRound - 1)
+      setTimerState('resting')
+      setIsRestPhase(true);
+      setMinutes(currentTimer.restMin)
+      setSeconds(currentTimer.restSec)
+      return
+    } else if (timerState === 'resting') {
+      setTimerState('working')
+      setIsRestPhase(false);
+      setMinutes(currentTimer.exerciseMin)
+      setSeconds(currentTimer.exerciseSec)
+      return
+    } else if (timerState === 'cycle-rest') {
+      setCurrentCycle((prevCycle) => prevCycle - 1)
+      setCurrentRound(currentTimer.rounds)
+      setTimerState('working')
+      setIsRestPhase(false);
+      setMinutes(currentTimer.exerciseMin)
+      setSeconds(currentTimer.exerciseSec)
+      return
+    }
+  }
+
+  const next = () => {
+    if (timerState === 'countdown' || timerState === 'starting') {
+      setTimerState('working')
+      setMinutes(currentTimer.exerciseMin);
+      setSeconds(currentTimer.exerciseSec);
+    } else {
+      startRest()
+    }
   }
 
   useEffect(() => {
@@ -140,11 +194,16 @@ const TimerPage = () => {
       </div>
       <div className='timer-ls d-flex justify-content-center align-items-center'>
         <p className='text-white clock-ls'>{`${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`}</p>
-        <div className='info-ls d-flex '>
+        <div className='info-2-ls d-flex justify-content-around'>
           <p>Round <span className='ps-4'>{currentRound}/{currentTimer.rounds}</span></p>
           {currentTimer.cycles > 1 && <p>Cycle <span className='ps-4'>{currentCycle}/{currentTimer.cycles}</span></p>}
+        </div>
+        <div className='info-ls d-flex '>
+          <button onClick={() => previous()}>previous</button>
           <button onClick={handleStartPause} className='start-btn-ls'>{isRunning ? 'Pause' : 'Start'}</button>
+          <button onClick={() => next()}>next</button>
           <p className='text-white wf'>{`${isRestPhase ? 'REST' : 'WORK'}`}</p>
+          <button onClick={() => restart()}>restart</button>
         </div>
       </div>
       <CompletedModal showModal={showModal} setShowModal={setShowModal} restart={restart}/>
