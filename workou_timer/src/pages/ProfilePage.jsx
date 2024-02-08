@@ -7,7 +7,7 @@ export default function ProfilePage() {
 
   // Sign out button
   function SignOutButton() {
-    return <button className='btn-blue' onClick={() => auth.signOut()}>Sign Out</button>;
+    return <button className='new-timer-btn' onClick={() => auth.signOut()}>Sign Out</button>;
   }
 
   const minOptions = Array.from({ length: 99 }, (_, index) => index);

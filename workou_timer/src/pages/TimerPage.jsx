@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useUserContext } from '../utils/UserContext';
 import CompletedModal from '../components/CompletedModal';
 import { Icon } from '@iconify/react';
+import useSound from 'use-sound'
+import Beep from '../components/Beep';
+import { playBeep } from '../utils/beep';
 
 let countdown;
 
@@ -17,13 +20,60 @@ const TimerPage = () => {
   const [isRestPhase, setIsRestPhase] = useState(false);  
   const [timerState, setTimerState] = useState('starting')
   const [message, setMessage] = useState('')
+  // const [beepSrc, setBeepSrc] = useState('/beep3.mp3')
+  const [play, { stop }] = useSound(user.beepSrc, {volume: 0.5});
+  console.log(user.beepSrc);
 
   useEffect(() => {
     if (user) {
       setMinutes(user.countdownMin);
       setSeconds(user.countdownSec);
+      // setBeepSrc(user.beepSrc)
+      // console.log(user.beepSrc);
     }
   }, [user])
+
+  useEffect(() => {
+    if (user.beep) {
+      if (seconds === 3 && minutes === 0) {
+        play()
+      }
+    }
+  }, [seconds])
+
+  useEffect(() => {
+    if (!isRunning) {
+      stop();
+    }
+  }, [isRunning, stop]);
+
+
+  useEffect(() => {
+    let newMessage;
+
+    switch (timerState) {
+      case 'starting':
+        newMessage = '';
+        break;
+      case 'countdown':
+        newMessage = 'Get ready...';
+        break;
+      case 'working':
+        newMessage = 'WORK';
+        break;
+      case 'resting':
+        newMessage = 'REST';
+        break;
+      case 'cycle-rest':
+        newMessage = 'REST';
+        break;
+      default:
+        newMessage = '';
+        break;
+    }
+    setMessage(newMessage);
+  }, [timerState]);
+  
 
   const reduceMin = () => {
     if (minutes === 0) {
@@ -173,12 +223,13 @@ const TimerPage = () => {
         <div className='info'>
           <p>Round <span className='ps-4'>{currentRound}/{currentTimer.rounds}</span></p>
           {currentTimer.cycles > 1 && <p>Cycle <span className='ps-4'>{currentCycle}/{currentTimer.cycles}</span></p>}
-          <p className='text-white'>{`${isRestPhase ? 'REST' : 'WORK'}`}</p>
+          <p className='text-white wf'>{message}</p>
           <div className='d-flex justify-content-center align-items-center pt-4'>
-            <button onClick={() => previous()} className='timer-nav'><Icon icon="ooui:next-rtl" /></button>
+            <button onClick={() => previous()} className='timer-nav'><Icon icon="ooui:next-rtl" width="25" height="25"/></button>
             <button onClick={handleStartPause} className='start-btn mx-3'>{isRunning ? <Icon icon="ic:baseline-pause" width="40" height="40"/> : <Icon icon="solar:play-bold" width="40" height="40"/>}</button>
-            <button onClick={() => next()} className='timer-nav'><Icon icon="ooui:next-ltr" /></button>
-          </div>        
+            <button onClick={() => next()} className='timer-nav'><Icon icon="ooui:next-ltr" width="25" height="25"/></button>
+          </div>
+          <button onClick={() => restart()} className='timer-nav mt-3'><Icon icon="codicon:debug-restart" width="25" height="25"/></button>
         </div>
       </div>
       <div className='timer-ls d-flex justify-content-center align-items-center'>
@@ -197,6 +248,7 @@ const TimerPage = () => {
           <button onClick={() => restart()} className='timer-nav'><Icon icon="codicon:debug-restart" /></button>
         </div>
       </div>
+      {/* <Beep minutes={minutes} seconds={seconds}/> */}
       <CompletedModal showModal={showModal} setShowModal={setShowModal} restart={restart}/>
     </div>
   );

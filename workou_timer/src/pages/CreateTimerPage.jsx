@@ -26,8 +26,7 @@ export default function CreateTimerPage() {
     return colors[randomIndex];
   }
 
-  const [selectedColor, setSelectedColor] = useState(getRandomColor()); // Default color
-
+  const [selectedColor, setSelectedColor] = useState(getRandomColor()); // Set Random default color
 
   const [timerData, setTimerData] = useState({
     id: Math.random().toString(36).substring(2), 

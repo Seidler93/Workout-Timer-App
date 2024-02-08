@@ -7,6 +7,9 @@ export default function LoginPage() {
   const {user, setUser} = useUserContext()
   const navigate = useNavigate();
   const [hidden, setHidden] = useState(false)
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   // Sign in with Google button
   function SignInButton() {
@@ -29,12 +32,6 @@ export default function LoginPage() {
         <i className="fa-brands fa-google-plus-g"></i>
       </a>
     );
-  }
-  
-  // Sign out button
-  function SignOutButton() {
-
-    return <button className='btn-blue' onClick={() => auth.signOut()}>Sign Out</button>;
   }
 
   const checkAndCreateUser = async (userData) => {
@@ -75,6 +72,8 @@ export default function LoginPage() {
       displayName: userData.displayName,
       countdownMin: 0, // Set default countdown minutes
       countdownSec: 0, // Set default countdown seconds
+      beep: true,
+      beepSrc: '/beep3.mp3'
     };
 
     const userDoc = firestore.doc(`users/${userData.uid}`);
@@ -83,6 +82,47 @@ export default function LoginPage() {
     await batch.commit();
 
     return userData;
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    try {
+      // Create user with email and password
+      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      const userData = userCredential.user;
+
+      // Update user profile with additional data
+      await userData.updateProfile({
+        displayName: name,
+      });
+
+      // Create user document in Firestore
+      const newUser = await createNewUser(userData);
+
+      // Set user data and navigate to home page
+      setUser(newUser);
+      navigate(`/`);
+    } catch (error) {
+      console.error("Error creating new user:", error);
+    }
+  };
+
+  const handleSignIn = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    try {
+      // Sign in user with email and password
+      const userCredential = await auth.signInWithEmailAndPassword(email, password);
+      const userData = userCredential.user;
+
+      // Fetch user data from Firestore
+      const fetchedUserData = await fetchUserDataByEmail(userData.email);
+
+      // Set user data and navigate to home page
+      setUser(fetchedUserData);
+      navigate(`/`);
+    } catch (error) {
+      console.error("Error signing in:", error);
+    }
   };
 
   const fetchUserDataByEmail = async (email) => {
@@ -96,39 +136,42 @@ export default function LoginPage() {
     }
   };
 
+
+  const clear = () => {
+    setName('')
+    setEmail('')
+    setPassword('')
+    console.log(true);
+    setHidden(!hidden)
+  }
+
   return (
     <div className={`cont ${hidden && 'active'}`} id='cont'>
       <div className='form-cont sign-up'>
-        <form>
+        <form onSubmit={handleSignUp}>
           <h1>Create Account</h1>
           <div className="social-icons">
             <SignInButton />
-            <a href="#" className="icon"><i className="fa-brands fa-facebook-f"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-github"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-linkedin-in"></i></a>
           </div>
           <span>or use your email for registeration</span>
-          <input type="text" placeholder="Name"/>
-          <input type="email" placeholder="Email"/>
-          <input type="password" placeholder="Password"/>
-          <button>Sign Up</button>
+          <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <button type="submit" >Sign Up</button>
         </form>
       </div>
 
       <div className="form-cont sign-in">
-        <form>
+        <form onSubmit={handleSignIn}>
             <h1>Sign In</h1>
             <div className="social-icons">
               <SignInButton />
-              <a href="#" className="icon"><i className="fa-brands fa-facebook-f"></i></a>
-              <a href="#" className="icon"><i className="fa-brands fa-github"></i></a>
-              <a href="#" className="icon"><i className="fa-brands fa-linkedin-in"></i></a>
             </div>
             <span>or use your email password</span>
-            <input type="email" placeholder="Email"/>
-            <input type="password" placeholder="Password"/>
-            <a href="#">Forget Your Password?</a>
-            <button>Sign In</button>
+            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            {/* <a href="#">Forget Your Password?</a> */}
+            <button >Sign In</button>
           </form>
         </div>
 
@@ -137,12 +180,12 @@ export default function LoginPage() {
             <div className="toggle-panel toggle-left">
               <h1>Welcome Back!</h1>
               <p>Enter your personal details to use all of site features</p>
-              <button onClick={() => setHidden(!hidden)} className='hidden' id="login">Sign In</button>
+              <button onClick={() => clear()} className='hidden' id="login">Sign In</button>
             </div>
             <div className="toggle-panel toggle-right">
               <h1>Welcome, Friend!</h1>
               <p>Enter your personal details to use all of site features</p>
-              <button onClick={() => setHidden(!hidden)} className='hidden' id="register">Sign Up</button>
+              <button onClick={() => clear()} className='hidden' id="register">Sign Up</button>
             </div>
           </div>
         </div>

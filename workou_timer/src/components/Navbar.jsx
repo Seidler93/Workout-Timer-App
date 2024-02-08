@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { useUserContext } from "../utils/UserContext"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { Icon } from '@iconify/react';
@@ -9,6 +9,13 @@ export function Navbar() {
   const {user} = useUserContext()
   const navigate = useNavigate();
   const location = useLocation();
+  const [profSrc, setProfSrc] = useState('/placeHolder.png')
+
+  useEffect(() => {
+    if (user.photoURL) {
+      setProfSrc(user.photoURL)
+    }
+  }, [user])
 
   // Check if the current URL is not the home page
   const isNotHomePage = location.pathname !== '/';
@@ -19,7 +26,7 @@ export function Navbar() {
     <nav className={`px-5 ${isTimer && 'nav-timer'}`}>
       {isNotHomePage && <Link to="/" className='back-btn'><Icon icon='typcn:arrow-back' width="40" height="40" color="white" /></Link>}
       {!isNotHomePage && <h2>Gym Timer</h2>}
-      <Link to={'/profile'}><img src={user?.photoURL} /></Link>
+      <Link to={'/profile'}><img src={profSrc} /></Link>
     </nav>
   )
 }
